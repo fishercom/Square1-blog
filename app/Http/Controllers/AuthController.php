@@ -3,12 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class AuthController extends Controller
 {
 
 	public function login(Request $request)
     {
+        $v = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        if ($v->fails())
+        {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $v->errors()
+            ], 422);
+        }
+
         $http = new \GuzzleHttp\Client;
         try {
             
@@ -17,7 +31,7 @@ class AuthController extends Controller
                     'grant_type' => 'password',
                     'client_id' => config('services.passport.client_id'),
                     'client_secret' => config('services.passport.client_secret'),
-                    'username' => $request->username,
+                    'username' => $request->email,
                     'password' => $request->password,
                 ]
             ]);
@@ -36,9 +50,34 @@ class AuthController extends Controller
         }
     }
     
+    public function register(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password'  => 'required|min:4|confirmed',
+        ]);
+        if ($v->fails())
+        {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $v->errors()
+            ], 422);
+        }
+        
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->active = true;
+        $user->save();
+        
+        return response()->json(['status' => 'success'], 200);
+    }
+
     public function logout()
     {
-        auth()->user()->tokens->each(function ($token, $key) {
+        \Auth::user()->tokens->each(function ($token, $key) {
             $token->delete();
         });
         

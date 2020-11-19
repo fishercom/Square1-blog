@@ -24,6 +24,7 @@
 					autocomplete="off"
 					:disabled="loading"
 				/>
+				<div class="invalid-feedback" v-show="error.email">{{ error.email }}</div>
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
@@ -35,9 +36,10 @@
 					v-model="form.password"
 					:disabled="loading"
 				/>
-        <div class="invalid-feedback" v-show="error.message">{{ error.message }}</div>
+				<div class="invalid-feedback" v-show="error.password">{{ error.password }}</div>
 			</div>
 			<div class="form-group">
+		        <div class="invalid-feedback" v-show="error.message">{{ error.message }}</div>
 				<button type="submit" class="btn btn-primary btn-block" :disabled="loading">
 					<span v-show="loading">Logging in</span>
 					<span v-show="!loading">Login</span>
@@ -54,26 +56,26 @@
 
 <script>
 export default {
-		data() {
-			return {
-				loading: false,
-				form: {
-					email: null,
-					password: null
-				},
-				error: {
-					email: null,
-          password: null,
-          message: null
-				}
-			};
+data() {
+	return {
+		loading: false,
+		form: {
+			email: null,
+			password: null
+		},
+		error: {
+			email: null,
+			password: null,
+			message: null
+		}
+	};
   },
   methods: {
     login() {
       this.loading = true;
       this.$store
         .dispatch("retrieveToken", {
-          username: this.form.email,
+          email: this.form.email,
           password: this.form.password
         })
         .then(response => {
@@ -81,16 +83,21 @@ export default {
           this.$router.push({ name: "dashboard" });
         })
         .catch(err => {
-						(err.response.data)
-							? this.setErrors(err.response.data)
-							: this.clearErrors();
-						this.loading = false;
+            this.loading = false;
+			console.log(err.response.data);
+            if(err.response.data.message){
+                this.error.message = err.response.data.message;
+                return;
+            }
+
+            (err.response.data.errors)
+                ? this.setErrors(err.response.data.errors)
+                : this.clearErrors();
         });
     },
-    setErrors(error) {
-      this.error.email = true;
-      this.error.password = true;
-      this.error.message = error;
+    setErrors(errors) {
+        this.error.email = errors.email ? errors.email[0] : null;
+        this.error.password = errors.password ? errors.password[0] : null;
     },
     clearErrors() {
       this.error.email = null;

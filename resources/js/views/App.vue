@@ -2,7 +2,11 @@
 	<div>
 		<app-header></app-header>
 		<transition name="fade" mode="out-in">
-			<router-view></router-view>
+			<div class="container min-height">
+				<div class="row justify-content-center">
+					<router-view></router-view>
+				</div>
+			</div>
 		</transition>
 		<app-footer></app-footer>
 	</div>

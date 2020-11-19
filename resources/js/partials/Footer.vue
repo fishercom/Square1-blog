@@ -2,8 +2,7 @@
 	<footer>
 		<hr>
 		<div class="container">
-			&copy;<span v-once>Blog</span> <span v-once>{{ currentYear }},
-			developed by Fischer Tirado</span>
+			&copy;<span v-once>{{ currentYear }} Blog developed by Fischer Tirado</span>
 		</div>
 	</footer>
 </template>

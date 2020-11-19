@@ -7,6 +7,7 @@ import BootstrapVue from 'bootstrap-vue' //Importing
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '../css/app.css'
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)

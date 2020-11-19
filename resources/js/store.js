@@ -16,6 +16,9 @@ const store = new Vuex.Store({
     retrieveToken(state, token) {
       state.token = token
     },
+    registerUser(state, token) {
+      state.token = token
+    },
     destroyToken(state) {
       state.token = null
     }
@@ -25,8 +28,33 @@ const store = new Vuex.Store({
 
       return new Promise((resolve, reject) => {
         axios.post('/api/login', {
-          username: credentials.username,
+          email: credentials.email,
           password: credentials.password,
+        })
+          .then(response => {
+            //console.log(response)
+            const token = response.data.access_token
+            localStorage.setItem('access_token', token)
+            context.commit('retrieveToken', token)
+
+            resolve(response)
+          })
+          .catch(error => {
+            //console.log(error)
+            reject(error)
+          })
+      })
+
+    },
+    registerUser(context, form) {
+        console.log(form);
+
+      return new Promise((resolve, reject) => {
+        axios.post('/api/register', {
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          password_confirmation: form.password_confirmation,
         })
           .then(response => {
             //console.log(response)
@@ -68,7 +96,24 @@ const store = new Vuex.Store({
         })
 
       }
-    }
+    },
+    latestPosts() {      
+        return new Promise((resolve, reject) => {
+          axios.get('/api/posts')
+            .then(response => {
+              console.log(response)
+              resolve(response)
+            })
+            .catch(error => {
+              //console.log(error)
+              reject(error)
+            })
+        })
+
+    },
+    
+
+
   }
 })
 

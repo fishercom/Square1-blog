@@ -11,13 +11,16 @@
 					<router-link :to="{name: 'index'}" tag="li" class="nav-item" activeClass="active" exact>
 						<a class="nav-link">Home</a>
 					</router-link>
-					<router-link v-show="!isLoggedIn" :to="{name: 'login'}" tag="li" class="nav-item" activeClass="active" exact>
+					<router-link :to="{name: 'dashboard'}" v-show="loggedIn" tag="li" class="nav-item" activeClass="active" exact>
+						<a class="nav-link">Dashboard</a>
+					</router-link>
+					<router-link v-show="!loggedIn" :to="{name: 'login'}" tag="li" class="nav-item" activeClass="active" exact>
 						<a class="nav-link">Login</a>
 					</router-link>
-					<router-link v-show="isLoggedIn" :to="{name: 'profile'}" tag="li" class="nav-item" activeClass="active">
-						<a class="nav-link">Profile</a>
+					<router-link v-show="!loggedIn" :to="{name: 'register'}" tag="li" class="nav-item" activeClass="active" exact>
+						<a class="nav-link">Register</a>
 					</router-link>
-					<li class="nav-item" v-show="isLoggedIn">
+					<li class="nav-item" v-show="loggedIn">
 						<a class="nav-link" href="#" @click.prevent="logout">Logout</a>
 					</li>
 				</ul>
@@ -35,16 +38,15 @@
 			}
 		},
 		computed: mapGetters([
-			'isLoggedIn'
+			'loggedIn'
 		]),
 		methods: {
 			logout() {
-				//jwtToken.removeToken();
-				this.$store.dispatch('unsetAuthUser')
-					.then(() => {
-						this.$noty.success('You are logged out');
-						this.$router.push({name: 'login'});
-					});
+
+				this.$store.dispatch("destroyToken").then(response => {
+					this.$router.push({ name: "login" });
+				});
+
 			}
 		}
 	}

@@ -4,7 +4,10 @@ Vue.use(VueRouter)
 
 // Pages
 import NotFound from './views/NotFound'
+import Index from './views/Index'
+import Post from './views/Post'
 import Login from './views/Login'
+import Register from './views/Register'
 import Logout from './views/Logout'
 import Dashboard from './views/Dashboard'
 
@@ -13,6 +16,16 @@ const router = new VueRouter({
     mode: 'history',
     linkActiveClass: 'is-active',
     routes: [
+        {
+            path: '/index',
+            name: 'index',
+            component: Index,
+        },
+        {
+            path: '/post',
+            name: 'post',
+            component: Post,
+        },
         {
             path: '/login',
             name: 'login',
@@ -25,6 +38,11 @@ const router = new VueRouter({
             meta: {
                 requiresAuth: true,
             }
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register,
         },
         {
             path: '/dashboard',
@@ -41,7 +59,7 @@ const router = new VueRouter({
         },
         { 
             path: '*', 
-            redirect: '/dashboard', 
+            redirect: '/index', 
         },
     ],
 });
