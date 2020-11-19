@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any}', 'PostController@index')->where('any', '.*');
+Route::get('/{any}', 'HomeController@index')->where('any', '.*');

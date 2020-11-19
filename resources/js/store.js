@@ -46,15 +46,15 @@ const store = new Vuex.Store({
       })
 
     },
-    registerUser(context, form) {
-        console.log(form);
+    registerUser(context, param) {
+        console.log(param);
 
       return new Promise((resolve, reject) => {
         axios.post('/api/register', {
-          name: form.name,
-          email: form.email,
-          password: form.password,
-          password_confirmation: form.password_confirmation,
+          name: param.name,
+          email: param.email,
+          password: param.password,
+          password_confirmation: param.password_confirmation,
         })
           .then(response => {
             //console.log(response)
@@ -97,7 +97,7 @@ const store = new Vuex.Store({
 
       }
     },
-    latestPosts() {      
+    latestPosts(){
         return new Promise((resolve, reject) => {
           axios.get('/api/posts')
             .then(response => {
@@ -109,9 +109,21 @@ const store = new Vuex.Store({
               reject(error)
             })
         })
-
     },
-    
+    getPost(id){
+      return new Promise((resolve, reject) => {
+        axios.get('/api/post/'+id)
+          .then(response => {
+            console.log(response)
+            resolve(response)
+          })
+          .catch(error => {
+            //console.log(error)
+            reject(error)
+          })
+      })
+  },
+  
 
 
   }

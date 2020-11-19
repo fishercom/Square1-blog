@@ -1,20 +1,26 @@
 <template>
-  <!-- Blog Entries Column -->
-  <div class="col-md-10">
-
-    <h1 class="title">Latest Posts</h1>
-
-    <div class="list-group">
-        <div v-for="post in posts" :key="post.id">
-            <post :post="post"></post>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-8">
+				<div class="page-header">
+					<h1 class="display-4">Latest Posts</h1>
+				</div>
+        <div class="py-4 list-group">
+            <div v-for="post in posts" :key="post.id">
+                <post :post="post"></post>
+            </div>
         </div>
-    </div>
-
-  </div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+          <sidebar></sidebar>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 import Post from '../partials/Post.vue'
+import Sidebar from '../partials/Sidebar.vue'
 
 export default {
 data() {
@@ -27,10 +33,11 @@ data() {
     };
   },
   components: {
-    'post': Post
+    'post': Post,
+    'sidebar': Sidebar,
   },
   mounted () {
-      this.get_posts()
+      //this.get_posts()
   },
   methods: {
     get_posts() {

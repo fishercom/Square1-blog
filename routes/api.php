@@ -19,4 +19,5 @@ Route::post('/register', 'AuthController@register');
 Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
 
 Route::get('/posts', 'PostController@list');
+Route::get('/post/{id}', 'PostController@item');
 
