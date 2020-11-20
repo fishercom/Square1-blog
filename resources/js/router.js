@@ -3,13 +3,14 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // Pages
-import NotFound from './views/NotFound'
-import Index from './views/Index'
-import Post from './views/Post'
-import Login from './views/Login'
-import Register from './views/Register'
-import Logout from './views/Logout'
-import Dashboard from './views/Dashboard'
+import NotFound from './pages/NotFound'
+import Index from './pages/Index'
+import Post from './pages/Post'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Logout from './pages/Logout'
+import Dashboard from './pages/Dashboard'
+import CreatePost from './pages/CreatePost'
 
 // Routes
 const router = new VueRouter({
@@ -48,6 +49,14 @@ const router = new VueRouter({
             path: '/dashboard',
             name: 'dashboard',
             component: Dashboard,
+            meta: {
+                requiresAuth: true,
+            }
+        },
+        {
+            path: '/create-post',
+            name: 'create_post',
+            component: CreatePost,
             meta: {
                 requiresAuth: true,
             }

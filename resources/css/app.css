@@ -45,12 +45,6 @@
   height: auto;
 }
 
-/*Twitter actions*/
-.tw_actions {
-  text-align: right;
-  margin-top: -10px;
-}
-
-.tw-hide{
-  opacity: 0.3;
+.sidebar-item{
+  padding: 25px;
 }

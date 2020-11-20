@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -10,16 +11,53 @@ class PostController extends Controller
 
 	public function list()
 	{
-		$list=Post::where('active', true)->orderBy('publication_date', 'desc')->get();
+		$list=Post::select(\DB::raw('users.name as author'), 'posts.id', 'posts.title', \DB::raw('SUBSTRING(posts.description, 1, 255) as description'), 'posts.publication_date')
+			->join('users', function($join) {
+            	$join->on('posts.user_id', '=', 'users.id');
+	        })
+			->where('posts.active', true)->orderBy('posts.publication_date', 'desc')->get();
 
 		return response()->json($list);
 	}
 
 	public function item($id)
 	{
-		$post=Post::find($id);
+		//$post=Post::find($id);
+		$post=Post::select(\DB::raw('users.name as author'), 'posts.id', 'posts.title', \DB::raw('SUBSTRING(posts.description, 1, 255) as description'), 'posts.publication_date')
+			->join('users', function($join) {
+            	$join->on('posts.user_id', '=', 'users.id');
+	        })
+			->where('posts.id', $id)->first();
 
 		return response()->json($post);
 	}	
+
+    public function store(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'publication_date'  => 'required',
+        ]);
+        if ($v->fails())
+        {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $v->errors()
+            ], 422);
+        }
+		
+		$user = \Auth::user();
+		
+        $post = new Post;
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->publication_date = $request->publication_date;
+		$post->active = true;
+		$post->user_id = $user->id;
+        $post->save();
+        
+        return response()->json(['status' => 'success'], 200);
+    }
 
 }

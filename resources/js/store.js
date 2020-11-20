@@ -110,9 +110,10 @@ const store = new Vuex.Store({
             })
         })
     },
-    getPost(id){
+    getPost(context, param){
       return new Promise((resolve, reject) => {
-        axios.get('/api/post/'+id)
+        console.log('===>'+param.id)
+        axios.get('/api/post/'+param.id)
           .then(response => {
             console.log(response)
             resolve(response)
@@ -123,7 +124,29 @@ const store = new Vuex.Store({
           })
       })
   },
-  
+  savePost(context, param) {
+    //console.log(param);
+
+      return new Promise((resolve, reject) => {
+        axios.post('/api/post/store', {
+          title: param.title,
+          description: param.description,
+          publication_date: param.publication_date,
+        },
+        {
+          headers: { Authorization: "Bearer " + context.state.token }
+        })
+        .then(response => {
+          //console.log(response)
+          resolve(response)
+        })
+        .catch(error => {
+          //console.log(error)
+          reject(error)
+        })
+    })
+
+  },
 
 
   }
