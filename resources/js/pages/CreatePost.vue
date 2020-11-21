@@ -6,7 +6,7 @@
 					<h1 class="display-4">Create New Post</h1>
 				</div>
                 <div class="py-4 list-group">
-                    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                    <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show">
 
                         <b-form-group label="Post Title:" label-for="title">
                             <b-form-input
@@ -41,7 +41,7 @@
 						<div class="invalid-feedback" v-show="error.message">{{ error.message }}</div>
 
                         <b-button type="submit" variant="primary" :disabled="loading">
-                            <b-icon icon="check"></b-icon> 
+                            <b-icon icon="check"></b-icon>
                             <span v-show="loading">Submit...</span>
                             <span v-show="!loading">Submit</span>
                         </b-button>
@@ -82,9 +82,7 @@ export default {
     };
   },
   methods:{
-    onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+    onSubmit() {
         this.loading = true;
 
         this.$store

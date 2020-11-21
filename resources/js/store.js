@@ -32,7 +32,7 @@ const store = new Vuex.Store({
           password: credentials.password,
         })
           .then(response => {
-            //console.log(response)
+            console.log(response)
             const token = response.data.access_token
             localStorage.setItem('access_token', token)
             context.commit('retrieveToken', token)
@@ -72,9 +72,9 @@ const store = new Vuex.Store({
 
     },
     destroyToken(context) {
-      
+
       if (context.getters.loggedIn){
-        
+
         return new Promise((resolve, reject) => {
           axios.post('/api/logout', '', {
               headers: { Authorization: "Bearer " + context.state.token }
@@ -83,7 +83,7 @@ const store = new Vuex.Store({
               //console.log(response)
               localStorage.removeItem('access_token')
               context.commit('destroyToken')
-  
+
               resolve(response)
             })
             .catch(error => {
@@ -110,9 +110,24 @@ const store = new Vuex.Store({
             })
         })
     },
+    userPosts(context, param){
+        return new Promise((resolve, reject) => {
+          axios.post('/api/user/posts', {},
+          {
+            headers: { Authorization: "Bearer " + context.state.token }
+          })
+            .then(response => {
+              console.log(response)
+              resolve(response)
+            })
+            .catch(error => {
+              //console.log(error)
+              reject(error)
+            })
+        })
+    },
     getPost(context, param){
       return new Promise((resolve, reject) => {
-        console.log('===>'+param.id)
         axios.get('/api/post/'+param.id)
           .then(response => {
             console.log(response)
@@ -123,30 +138,27 @@ const store = new Vuex.Store({
             reject(error)
           })
       })
-  },
-  savePost(context, param) {
-    //console.log(param);
-
-      return new Promise((resolve, reject) => {
-        axios.post('/api/post/store', {
-          title: param.title,
-          description: param.description,
-          publication_date: param.publication_date,
-        },
-        {
-          headers: { Authorization: "Bearer " + context.state.token }
+    },
+    savePost(context, param) {
+        return new Promise((resolve, reject) => {
+            axios.post('/api/post/store', {
+                title: param.title,
+                description: param.description,
+                publication_date: param.publication_date,
+            },
+            {
+                headers: { Authorization: "Bearer " + context.state.token }
+            })
+            .then(response => {
+                //console.log(response)
+                resolve(response)
+            })
+            .catch(error => {
+                //console.log(error)
+                reject(error)
+            })
         })
-        .then(response => {
-          //console.log(response)
-          resolve(response)
-        })
-        .catch(error => {
-          //console.log(error)
-          reject(error)
-        })
-    })
-
-  },
+    },
 
 
   }

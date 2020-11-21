@@ -7,7 +7,7 @@
 				</div>
 
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search this blog">
+          <input type="text" class="form-control" v-model="filter" placeholder="Search this blog">
           <div class="input-group-append">
           <button class="btn btn-secondary" type="button">
             <b-icon icon="search"></b-icon>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="py-4 list-group">
-            <div v-for="post in posts" :key="post.id">
+            <div v-for="post in resultQuery" :key="post.id">
                 <post :post="post"></post>
             </div>
         </div>
@@ -33,12 +33,11 @@ import Post from '../shared/Post.vue'
 import Sidebar from '../shared/Sidebar.vue'
 
 export default {
-data() {
+  data() {
     return {
         loading: false,
-        posts: [
-            { id: 1, title: 'New Post', description: 'Post Description' }
-        ],
+        filter: null,
+        posts: null,
         error: null,
     };
   },
@@ -47,13 +46,26 @@ data() {
     'sidebar': Sidebar,
   },
   mounted () {
-    this.get_posts()
+    this.postlist()
+  },
+  computed: {
+    resultQuery(){
+      if(this.filter){
+      return this.posts.filter((item)=>{
+        return this.filter.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v))
+      })
+      }else{
+        return this.posts;
+      }
+    }
   },
   methods: {
-    get_posts() {
+    postlist() {
       this.loading = true;
       this.$store
-        .dispatch("latestPosts", {})
+        .dispatch("latestPosts", {
+            filter: this.filter
+        })
         .then(response => {
             this.loading = false;
             this.posts = response.data;
