@@ -42,3 +42,4 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
 
 Yo can check application running in production mode:
 [http://square1-test.deepsoft.pe](http://square1-test.deepsoft.pe)
+
