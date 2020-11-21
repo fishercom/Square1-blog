@@ -32,7 +32,7 @@ const store = new Vuex.Store({
           password: credentials.password,
         })
           .then(response => {
-            console.log(response)
+            //console.log(response)
             const token = response.data.access_token
             localStorage.setItem('access_token', token)
             context.commit('retrieveToken', token)
@@ -101,7 +101,7 @@ const store = new Vuex.Store({
         return new Promise((resolve, reject) => {
           axios.get('/api/posts')
             .then(response => {
-              console.log(response)
+              //console.log(response)
               resolve(response)
             })
             .catch(error => {
@@ -117,7 +117,7 @@ const store = new Vuex.Store({
             headers: { Authorization: "Bearer " + context.state.token }
           })
             .then(response => {
-              console.log(response)
+              //console.log(response)
               resolve(response)
             })
             .catch(error => {
@@ -130,7 +130,7 @@ const store = new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.get('/api/post/'+param.id)
           .then(response => {
-            console.log(response)
+            //console.log(response)
             resolve(response)
           })
           .catch(error => {

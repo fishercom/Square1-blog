@@ -66,12 +66,19 @@
 				<div class="invalid-feedback" v-show="error.password_confirmation">{{ error.password_confirmation }}</div>
 			</div>
 			<div class="form-group">
-				<div class="invalid-feedback" v-show="error.message">{{ error.message }}</div>
 				<button type="submit" class="btn btn-primary btn-block" :disabled="loading">
 					<span v-show="loading">Register in</span>
 					<span v-show="!loading">Register</span>
 				</button>
 			</div>
+            <div>
+                <b-alert show variant="danger" v-show="error.message">{{ error.message }}</b-alert>
+                <b-alert show variant="success" v-show="success"> Thank you for registering, please
+                    <router-link :to="{name: 'login'}">
+						login to continue
+					</router-link>
+                </b-alert>
+            </div>
 		</form>
 
 					</div>
@@ -99,6 +106,7 @@ data() {
             password: null,
             password_confirmation: null
         },
+        success: false
     };
   },
   methods: {
@@ -113,19 +121,19 @@ data() {
         })
         .then(response => {
           this.loading = false;
+          this.success = true;
           this.$router.push({ name: "dashboard" });
         })
         .catch(err => {
             this.loading = false;
-            if(err.response.data.message){
-                console.log(err.response.data.message);
-                this.error.message = err.response.data.message;
-                return;
+            if(!err.response.data.errors){
+                this.error.message = err.response.data;
             }
-
-            (err.response.data.errors)
-                ? this.setErrors(err.response.data.errors)
-                : this.clearErrors();
+            else{
+                (err.response.data.errors)
+                    ? this.setErrors(err.response.data.errors)
+                    : this.clearErrors();
+            }
         });
     },
     setErrors(errors) {

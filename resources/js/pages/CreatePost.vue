@@ -38,8 +38,6 @@
                             ></b-form-input>
                         </b-form-group>
 
-						<div class="invalid-feedback" v-show="error.message">{{ error.message }}</div>
-
                         <b-button type="submit" variant="primary" :disabled="loading">
                             <b-icon icon="check"></b-icon>
                             <span v-show="loading">Submit...</span>
@@ -51,6 +49,9 @@
                         </b-button>
 
                     </b-form>
+                    <div>
+                        <b-alert show variant="danger" v-show="error.message">{{ error.message }}</b-alert>
+                    </div>
                 </div>
 			</div>
 			<div class="col-12 col-md-6 col-lg-4">
@@ -97,15 +98,14 @@ export default {
         })
         .catch(err => {
             this.loading = false;
-            if(err.response.data.message){
-                console.log(err.response.data.message);
-                this.error.message = err.response.data.message;
-                return;
+            if(err.response.data){
+                this.error.message = err.response.data;
             }
-
-            (err.response.data.errors)
-                ? this.setErrors(err.response.data.errors)
-                : this.clearErrors();
+            else{
+                (err.response.data.errors)
+                    ? this.setErrors(err.response.data.errors)
+                    : this.clearErrors();
+            }
         });
     },
     onReset(evt) {

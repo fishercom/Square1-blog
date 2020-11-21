@@ -41,12 +41,14 @@
 				<div class="invalid-feedback" v-show="error.password">{{ error.password }}</div>
 			</div>
 			<div class="form-group">
-		        <div class="invalid-feedback" v-show="error.message">{{ error.message }}</div>
 				<button type="submit" class="btn btn-primary btn-block" :disabled="loading">
 					<span v-show="loading">Logging in</span>
 					<span v-show="!loading">Login</span>
 				</button>
 			</div>
+            <div>
+                <b-alert show variant="danger" v-show="error.message">{{ error.message }}</b-alert>
+            </div>
 		</form>
 
 					</div>
@@ -86,15 +88,14 @@ data() {
         })
         .catch(err => {
             this.loading = false;
-			console.log(err.response.data);
             if(err.response.data.message){
                 this.error.message = err.response.data.message;
-                return;
             }
-
-            (err.response.data.errors)
-                ? this.setErrors(err.response.data.errors)
-                : this.clearErrors();
+            else{
+                (err.response.data.errors)
+                    ? this.setErrors(err.response.data.errors)
+                    : this.clearErrors();
+            }
         });
     },
     setErrors(errors) {

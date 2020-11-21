@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//use App\Jobs\RecievePosts;
+use App\Jobs\RecievePosts;
 
 
 class HomeController extends Controller
@@ -11,7 +11,7 @@ class HomeController extends Controller
 	public function index(Request $request)
 	{
 
-		//RecievePosts::dispatch();
+		RecievePosts::dispatch();
 
 		return view('index');
 	}
