@@ -19,7 +19,7 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
 
         API_ENDPOINT=https://sq1-api-test.herokuapp.com/posts
     
-    Create a database previously
+    Create a database previously, then add connection parameters
 
         DB_CONNECTION=mysql
         DB_HOST=[SERVER OR LOCALHOST]
@@ -27,6 +27,10 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
         DB_DATABASE=[DATABASE NAME]
         DB_USERNAME=[MYSQL USER]
         DB_PASSWORD=[MYSQL PASSWORD]
+
+    Generate the Application Key
+    
+    `php artisan key:generate`
 
 3. Update dependencies and clean precompiled files and cache
 
