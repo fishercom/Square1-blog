@@ -53,11 +53,11 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
         PASSPORT_CLIENT_SECRET=[CLIENT CREDENTIAL ENCRYPTED]
 
 
-4. Run and schedule queues (optional)
+5. Run and schedule queues (optional)
 
     `$ php artisan queue:work`
 
-5. Lauch web server
+6. Launch web server
 
     `$ php artisan config:clear`
 
@@ -66,6 +66,8 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
     Now you can see it in your browser
     http://127.0.0.1:8000
 
-Yo can check application running in production mode:
-[http://square1-test.deepsoft.pe](http://square1-test.deepsoft.pe)
+
+You can see it running in production mode:
+
+http://square1-test.deepsoft.pe
 
