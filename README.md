@@ -56,6 +56,7 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
 5. Lauch web server
 
     `$ php artisan config:clear`
+
     `$ php artisan serve`
     
     Now you can see it in your browser
