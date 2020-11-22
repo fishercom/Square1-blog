@@ -43,7 +43,7 @@ class PostController extends Controller
 	public function item($id)
 	{
 		//$post=Post::find($id);
-		$post=Post::select(DB::raw('users.name as author'), 'posts.id', 'posts.title', DB::raw('SUBSTRING(posts.description, 1, 255) as description'), 'posts.publication_date')
+		$post=Post::select(DB::raw('users.name as author'), 'posts.id', 'posts.title', 'posts.description', 'posts.publication_date')
 			->join('users', function($join) {
             	$join->on('posts.user_id', '=', 'users.id');
 	        })

@@ -9,7 +9,8 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
 - Apache Server v2.4+
 
 ### Files Configuration
-1. To deploy the application, clone this repository: 
+1. To deploy the application, clone this repository:
+
     `$ git clone https://github.com/fishercom/square1-blog`
 
 2. Create th enviroment file .env, or rename .env.example file, then add next parammeters:
@@ -18,14 +19,7 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
 
         API_ENDPOINT=https://sq1-api-test.herokuapp.com/posts
     
-    Laravel Passport Configuration
-
-        PASSPORT_LOGIN_ENDPOINT=http://127.0.0.1:8000/oauth/token
-        PASSPORT_CLIENT_ID=2
-        PASSPORT_CLIENT_SECRET=mfJyGULVrHIOjAyWMi1GtUazykXkq4ZmbmBuC4Vm
-    
-
-    Create a database previously
+    Create a database previously, then add connection parameters
 
         DB_CONNECTION=mysql
         DB_HOST=[SERVER OR LOCALHOST]
@@ -34,20 +28,46 @@ This application is built in [Laravel Framework](https://laravel.com/) v8.0, It 
         DB_USERNAME=[MYSQL USER]
         DB_PASSWORD=[MYSQL PASSWORD]
 
+    Generate the Application Key
+    
+    `php artisan key:generate`
+
 3. Update dependencies and clean precompiled files and cache
+
     `$ composer update`
 
     `$ php artisan optimize`
 
     `$ php artisan migrate:refresh --seed`
 
-4. Run and schedule queues
+4. Install Laravel Passport
+
+    Laravel Passport Configuration
+    
+    `$ php artisan passport:install`
+
+    Edit .env file with new client credentials
+
+        PASSPORT_LOGIN_ENDPOINT=http://127.0.0.1:8000/oauth/token
+        PASSPORT_CLIENT_ID=2
+        PASSPORT_CLIENT_SECRET=[CLIENT CREDENTIAL ENCRYPTED]
+
+
+5. Run and schedule queues (optional)
+
     `$ php artisan queue:work`
 
-5. Lauch web server
+6. Launch web server
 
-    `$ php artisan serve` http://127.0.0.1:8000
+    `$ php artisan config:clear`
 
-Yo can check application running in production mode:
-[http://square1-test.deepsoft.pe](http://square1-test.deepsoft.pe)
+    `$ php artisan serve`
+    
+    Now you can see it in your browser
+    http://127.0.0.1:8000
+
+
+You can see it running in production mode:
+
+http://square1-test.deepsoft.pe
 
